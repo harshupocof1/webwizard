@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}My Watchlist - TechFlix{% endblock %}
+{% block content %}
+<h1 class="text-4xl font-extrabold mb-8 text-white border-b border-red-600 pb-4">
+  <span class="text-red-600">My</span> Watchlist
+</h1>
+
+{% if movies %}
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+        {% for movie in movies %}
+            <div class="group bg-gray-800 rounded-xl overflow-hidden shadow-2xl hover:shadow-red-600/40 transition-all-ease transform hover:scale-[1.03] relative">
+                
+                <form method="POST" action="{{ url_for('toggle_watchlist', movie_id=movie.id) }}" 
+                      class="absolute top-2 right-2 z-20 opacity-80 hover:opacity-100 transition-opacity"
+                      onsubmit="return confirm('Remove {{ movie.title }} from watchlist?');">
+                    <button type="submit" class="p-2 text-white bg-green-700 rounded-full hover:bg-green-800 shadow-lg transition-all-ease" title="Remove from Watchlist">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" /></svg>
+                    </button>
+                </form>
+                
+                <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" class="block">
+                    <div class="relative">
+                        <img src="{{ movie.poster }}" alt="{{ movie.title }}" class="w-full h-72 object-cover object-top transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    </div>
+                    
+                    <div class="p-4 absolute bottom-0 w-full">
+                        <h3 class="font-bold text-xl truncate">{{ movie.title }}</h3>
+                        <p class="text-sm text-gray-400 mb-3">{{ movie.genre }}</p>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="text-center py-20 bg-gray-900 rounded-xl border-4 border-dashed border-gray-700">
+        <p class="text-xl text-gray-400 mb-4">Your watchlist is empty.</p>
+        <p class="text-gray-500">Find something great on the <a href="{{ url_for('index') }}" class="text-red-500 hover:text-red-400 font-medium">homepage</a>!</p>
+    </div>
+{% endif %}
+{% endblock %}

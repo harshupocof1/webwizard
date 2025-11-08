@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}TechFlix{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom style for smoother hover effects across the site */
+    .transition-all-ease {
+      transition: all 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-white min-h-screen">
+  <header class="sticky top-0 z-50 p-4 flex justify-between items-center bg-gray-900/90 backdrop-blur-sm shadow-xl border-b border-gray-800 transition-all-ease">
+    <a href="{{ url_for('index') }}" class="text-3xl text-red-600 font-extrabold tracking-tight hover:text-red-500 transition-all-ease">TechFlix</a>
+    <div class="flex gap-3 items-center">
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('watchlist') }}" class="px-4 py-2 bg-gray-700 rounded-lg font-medium hover:bg-gray-600 transition-all-ease">Watchlist</a>
+        <span class="text-gray-300">Hi, <span class="font-semibold text-white">{{ current_user.username }}</span></span>
+        <a href="{{ url_for('logout') }}" class="px-4 py-2 bg-red-600 rounded-lg font-medium hover:bg-red-700 transition-all-ease shadow-lg shadow-red-600/30">Logout</a>
+      {% else %}
+        <a href="{{ url_for('login') }}" class="px-4 py-2 bg-red-600 rounded-lg font-medium hover:bg-red-700 transition-all-ease shadow-lg shadow-red-600/30">Login</a>
+        <a href="{{ url_for('register') }}" class="px-4 py-2 bg-gray-700 rounded-lg font-medium hover:bg-gray-600 transition-all-ease">Register</a>
+      {% endif %}
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto p-6 lg:p-8">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="mb-4 space-y-2">
+          {% for category, message in messages %}
+            {% set color = 'bg-red-600' if category == 'error' or category == 'danger' else 'bg-green-600' %}
+            <div class="p-3 rounded-lg font-medium text-white {{ color }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

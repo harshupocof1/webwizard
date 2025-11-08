@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Register - TechFlix{% endblock %}
+{% block content %}
+<div class="max-w-sm mx-auto bg-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-700">
+  <h2 class="text-3xl mb-6 font-bold text-center">Create Your <span class="text-red-600">TechFlix</span> Account</h2>
+  <form method="post">
+    <input name="username" placeholder="Username" class="w-full mb-4 p-3 bg-gray-900 rounded-lg border border-gray-700 focus:border-red-600 focus:ring-1 focus:ring-red-600 outline-none transition-all-ease" required>
+    <input type="email" name="email" placeholder="Email" class="w-full mb-4 p-3 bg-gray-900 rounded-lg border border-gray-700 focus:border-red-600 focus:ring-1 focus:ring-red-600 outline-none transition-all-ease" required>
+    <input type="password" name="password" placeholder="Password" class="w-full mb-6 p-3 bg-gray-900 rounded-lg border border-gray-700 focus:border-red-600 focus:ring-1 focus:ring-red-600 outline-none transition-all-ease" required>
+    
+    <button class="w-full bg-red-600 py-3 rounded-lg font-semibold text-lg hover:bg-red-700 transition-all-ease shadow-lg shadow-red-600/40">Register</button>
+  </form>
+  <p class="text-center text-gray-400 mt-4 text-sm">
+    Already have an account? <a href="{{ url_for('login') }}" class="text-red-500 hover:text-red-400 font-medium transition-all-ease">Sign In</a>
+  </p>
+</div>
+{% endblock %}

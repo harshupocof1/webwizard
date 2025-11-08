@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}Home - TechFlix{% endblock %}
+{% block content %}
+<h1 class="text-5xl font-extrabold mb-10 text-white pb-4">
+  <span class="text-red-600">Trending</span> Now
+</h1>
+
+<div class="flex flex-col sm:flex-row gap-5 mb-10">
+  <div class="relative flex-grow">
+    <input id="search" 
+           placeholder="Search for movies, series, and more..."
+           class="w-full p-4 pl-14 text-xl rounded-2xl bg-gray-800 border border-gray-700 focus:border-red-600 focus:ring-2 focus:ring-red-600 outline-none transition-all-ease 
+                  shadow-inner shadow-gray-950/50" />
+    <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+  </div>
+  
+  <div class="relative">
+    <select id="genre-filter" 
+            class="w-full sm:w-56 p-4 text-xl rounded-2xl bg-gray-800 border border-gray-700 focus:border-red-600 focus:ring-2 focus:ring-red-600 outline-none text-white appearance-none transition-all-ease cursor-pointer 
+                   shadow-inner shadow-gray-950/50">
+      <option value="">All Genres</option>
+      {% for genre in genres %}
+        <option value="{{ genre }}">{{ genre }}</option>
+      {% endfor %}
+    </select>
+    <svg class="absolute right-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-red-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+  </div>
+</div>
+
+
+<div id="listing" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-8"></div>
+
+<div id="loading-indicator" class="text-center py-10 hidden">
+  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mx-auto"></div>
+  <p class="mt-3 text-gray-400">Loading more titles...</p>
+</div>
+
+<script>
+  const listing = document.getElementById('listing');
+  const search = document.getElementById('search');
+  const genreFilter = document.getElementById('genre-filter'); // New element
+  const loadingIndicator = document.getElementById('loading-indicator');
+  let q = '', genre = '', page = 1, loading = false;
+
+  async function loadMovies(reset=false){
+    if(loading) return; 
+    loading=true;
+    loadingIndicator.classList.remove('hidden');
+
+    if(reset){ listing.innerHTML=''; page=1; }
+    
+    // Simulate a small delay for a smoother loading experience
+    await new Promise(resolve => setTimeout(resolve, 300)); 
+
+    const res = await fetch(`/api/movies?q=${encodeURIComponent(q)}&page=${page}&genre=${encodeURIComponent(genre)}`); // Added genre parameter
+    const data = await res.json();
+    
+    if (data.html.trim() === '' && reset) {
+        listing.innerHTML = '<p class="text-gray-400 text-center col-span-full py-10">No movies found matching your criteria.</p>';
+    } else {
+        listing.insertAdjacentHTML('beforeend', data.html);
+    }
+    
+    loading=false; 
+    loadingIndicator.classList.add('hidden');
+    
+    // Only increment page if content was loaded
+    if(data.html.trim() !== ''){
+        page++;
+    }
+  }
+  
+  // Debouncing the search input for better performance
+  let searchTimeout;
+  search.addEventListener('input', e => { 
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      q = e.target.value; 
+      loadMovies(true); 
+    }, 500); // Wait 500ms after user stops typing
+  });
+
+  // New: Genre filter listener
+  genreFilter.addEventListener('change', e => {
+      genre = e.target.value;
+      loadMovies(true); // Reset and reload when filter changes
+  });
+
+
+  // Infinite Scroll Logic
+  window.addEventListener('scroll', ()=> {
+    // Only load if the user is near the bottom
+    if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 600) {
+      loadMovies();
+    }
+  });
+
+  // Initial load
+  loadMovies();
+</script>
+{% endblock %}

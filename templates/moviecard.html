@@ -1,0 +1,18 @@
+{% for movie in items %}
+<a href="{{ url_for('movie_detail', movie_id=movie.id) }}" class="group bg-gray-800 rounded-xl overflow-hidden shadow-2xl hover:shadow-red-600/40 transition-all-ease transform hover:scale-[1.03] cursor-pointer relative block">
+  
+  <div class="relative">
+    <img src="{{ movie.poster }}" alt="{{ movie.title }}" class="w-full h-72 object-cover object-top transition-transform duration-500 group-hover:scale-105">
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+  </div>
+
+  <div class="p-4 absolute bottom-0 w-full">
+    <h3 class="font-bold text-xl truncate">{{ movie.title }}</h3>
+    <p class="text-sm text-gray-400 mb-3">{{ movie.genre }} • {{ movie.duration }}</p>
+    
+    <button class="px-4 py-2 bg-red-600 rounded-full text-sm font-semibold opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all-ease hover:bg-red-700 shadow-md shadow-red-600/50">
+      Play Now
+    </button>
+  </div>
+</a>
+{% endfor %}

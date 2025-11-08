@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'Edit Movie' if movie else 'Add Movie' }} - TechFlix Admin{% endblock %}
+{% block content %}
+<div class="max-w-xl mx-auto bg-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-700">
+  <h2 class="text-3xl mb-6 font-bold text-center">
+    {{ 'Edit' if movie else 'Add New' }} <span class="text-red-600">Movie</span>
+  </h2>
+  <form method="post">
+    
+    <div class="mb-4">
+      <label for="title" class="block text-sm font-medium text-gray-300 mb-1">Title</label>
+      <input name="title" id="title" placeholder="Movie Title" 
+             value="{{ movie.title if movie else '' }}"
+             class="w-full p-3 bg-gray-900 rounded-lg border border-gray-700 focus:border-red-600 focus:ring-1 focus:ring-red-600 outline-none transition-all-ease" required>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <label for="year" class="block text-sm font-medium text-gray-300 mb-1">Release Year</label>
+        <input type="number" name="year" id="year" placeholder="e.g., 2024" min="1900" max="2099" 
+               value="{{ movie.year if movie else '' }}"
+               class="w-full p-3 bg-gray-900 rounded-lg border border-gray-700 focus:border-red-600 focus:ring-1 focus:ring-red-600 outline-none transition-all-ease" required>
+      </div>
+      <div>
+        <label for="duration" class="block text-sm font-medium text-gray-300 mb-1">Duration</label>
+        <input name="duration" id="duration" placeholder="e.g., 1h 50m" 
+               value="{{ movie.duration if movie else '' }}"
+               class="w-full p-3 bg-gray-900 rounded-lg border border-gray-700 focus:border-red-600 focus:ring-1 focus:ring-red-600 outline-none transition-all-ease" required>
+      </div>
+    </div>
+    
+    <div class="mb-4">
+      <label for="genre" class="block text-sm font-medium text-gray-300 mb-1">Genre</label>
+      <input name="genre" id="genre" placeholder="e.g., Sci-Fi, Action, Drama" 
+             value="{{ movie.genre if movie else '' }}"
+             class="w-full p-3 bg-gray-900 rounded-lg border border-gray-700 focus:border-red-600 focus:ring-1 focus:ring-red-600 outline-none transition-all-ease" required>
+    </div>
+
+    <div class="mb-4">
+      <label for="poster" class="block text-sm font-medium text-gray-300 mb-1">Poster URL (Use placehold.co for testing)</label>
+      <input name="poster" id="poster" placeholder="Image URL for the poster" 
+             value="{{ movie.poster if movie else 'https://placehold.co/300x450/4f46e5/fff?text=New+Movie' }}"
+             class="w-full p-3 bg-gray-900 rounded-lg border border-gray-700 focus:border-red-600 focus:ring-1 focus:ring-red-600 outline-none transition-all-ease" required>
+    </div>
+
+    <div class="mb-6">
+      <label for="synopsis" class="block text-sm font-medium text-gray-300 mb-1">Synopsis</label>
+      <textarea name="synopsis" id="synopsis" rows="4" placeholder="Brief summary of the plot..." 
+                class="w-full p-3 bg-gray-900 rounded-lg border border-gray-700 focus:border-red-600 focus:ring-1 focus:ring-red-600 outline-none transition-all-ease" required>{{ movie.synopsis if movie else '' }}</textarea>
+    </div>
+    
+    <button type="submit" class="w-full bg-red-600 py-3 rounded-lg font-semibold text-lg hover:bg-red-700 transition-all-ease shadow-lg shadow-red-600/40">
+      {{ 'Update Movie' if movie else 'Submit Movie' }}
+    </button>
+  </form>
+</div>
+{% endblock %}

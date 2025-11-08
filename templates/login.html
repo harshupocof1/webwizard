@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Sign In - TechFlix{% endblock %}
+{% block content %}
+<div class="max-w-sm mx-auto bg-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-700">
+  <h2 class="text-3xl mb-6 font-bold text-center">Sign In to <span class="text-red-600">TechFlix</span></h2>
+  <form method="post">
+    <input name="identity" placeholder="Username or Email" class="w-full mb-4 p-3 bg-gray-900 rounded-lg border border-gray-700 focus:border-red-600 focus:ring-1 focus:ring-red-600 outline-none transition-all-ease" required>
+    <input type="password" name="password" placeholder="Password" class="w-full mb-6 p-3 bg-gray-900 rounded-lg border border-gray-700 focus:border-red-600 focus:ring-1 focus:ring-red-600 outline-none transition-all-ease" required>
+    
+    <button class="w-full bg-red-600 py-3 rounded-lg font-semibold text-lg hover:bg-red-700 transition-all-ease shadow-lg shadow-red-600/40">Login</button>
+  </form>
+  <p class="text-center text-gray-400 mt-4 text-sm">
+    New to TechFlix? <a href="{{ url_for('register') }}" class="text-red-500 hover:text-red-400 font-medium transition-all-ease">Create an account</a>
+  </p>
+</div>
+{% endblock %}
